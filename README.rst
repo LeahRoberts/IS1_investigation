@@ -27,6 +27,7 @@ The output will give:
 4. A contigs.fa file that contains the assembled contigs
 5. An out.delta file that contains the nucmer results of the comparison of the assembled contigs to the EC958 IS1 plus flanking region
 6. A log.txt file that contains a summary of how many contigs were made, and how many match the IS1 and flanking regions in EC958 (NOTE: due to repeats in the out.delta file, number of matching contigs may not be 100% correct)
+7. **NEW** A txt file with the names of the reads from the velvet.bam file
 
 You will likely also need to know the length of your query EC958 IS to determine whether there are matches at the flanking regions (python script included). 
 
