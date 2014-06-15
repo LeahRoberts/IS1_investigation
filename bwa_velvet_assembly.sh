@@ -92,6 +92,8 @@ do
 		samtools faidx $REFERENCE
 		echo "creating bam file from sam file"
 		samtools view -bt $REFERENCE.fai $name.sorted.mapped.sam > $name.velvet.bam
+		echo "make text file with the read names"
+		samtools view $name.velvet.bam | cut -f1 -d$'\t' > $name.readnames.txt
 		echo "finished creating bam file for velvet"
 	fi
 done
