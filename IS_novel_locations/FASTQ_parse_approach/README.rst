@@ -16,9 +16,11 @@ The lists is generated from the velvet.bam file which has filtered reads that ma
 
 This list then needs to be modified to match the fastq id::
 
-	sed -i 's/^/@/g'; sed -i 's/$/\/1/g'
+	sed -i 's/$/\/1/g'
 	
+**NOTE** - The read id does not need to have an '@' symbol at the beginning.
 This list can be used for the $name_1.fastq file.
+
 For the $name_2.fastq files, change the previous list to have "/2" at the end::
 
 	sed -i 's/\/1/\/2/g' 
