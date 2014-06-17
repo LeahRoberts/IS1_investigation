@@ -31,7 +31,20 @@ Use these lists when parsing the fastq files.
 Step 3: Parse fastq file
 --------------------------
 
-Not working atm
+Run the fastq_parser.py script as follows::
+
+	python fastq_parser.py strain_1.fastq strain_2.fastq
+
+There needs to be 2 lists containing the names of the reads that you want to parse ([] refers to which argument they relate to)::
+
+	list.txt [1]
+	list_2.txt [2]
+
+This will give the output::
+
+	strain_read_1.fastq
+	strain_reads_2.fastq
+
 
 
 Step 4: Map these reads back to the contigs
