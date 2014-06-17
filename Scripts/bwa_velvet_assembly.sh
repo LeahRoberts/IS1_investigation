@@ -157,7 +157,10 @@ do
 				cat list.txt > list_2.txt
 				sed -i 's/$/\/1/g' list.txt
 				sed -i 's/$/\/2/g' list_2.txt
-				python ../../fastq_parser.py $name\_1.fastq $name\_2.fastq 
+				python ../../fastq_parser.py $name\_1.fastq $name\_2.fastq
+				echo "renaming output fastq files"
+				mv $name\_reads_1.fastq $name\_1.fastq
+				mv $name\_reads_2.fastq $name\_2.fastq
 			fi
 		done
 		cd ../

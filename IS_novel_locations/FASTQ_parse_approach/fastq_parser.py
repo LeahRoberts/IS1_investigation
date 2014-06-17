@@ -33,6 +33,7 @@ with open('list.txt', 'r') as f:
 			SeqIO.write(fastq_rec, output, "fastq")
 		
 print "Finished parsing " + in_file
+os.remove(in_file)
 
 # Next loop does the same thing except with the second list and the second fastq file
 
@@ -55,3 +56,4 @@ with open('list_2.txt', 'r') as f:
                         SeqIO.write(fastq_rec, output, "fastq")
 
 print "Finished parsing " + in_file
+os.remove(in_file)
