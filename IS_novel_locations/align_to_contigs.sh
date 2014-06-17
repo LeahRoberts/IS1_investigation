@@ -6,29 +6,33 @@
 
 for f in *
 do
-	name=$(ls $f | cut -f1 -d_)
-	echo "processing " $name
-	
-	REFERENCE=../velvet_contigs/$name\_[[:digit:]]*\_Contigs.fasta
-	echo "Reference is " $REFERENCE
-	
-#	bwa index $REFERENCE
-	
-	if [[ $f == *_1.fastq ]]
+	if [[ $f == *.fastq ]]
 	then
-		read1=$f
-		name1=$(ls $f | cut -f1 -d.)
-		bwa aln $REFERENCE $read1 > $name1.sai
-		#echo $name1
-		#echo $read1
-	elif [[ $f == *_2.fastq ]]
-	then
-		read2=$f
-		name2=$(ls $f | cut -f1 -d.)
-		#echo "paired-end read " $name2
-		bwa aln $REFERENCE $read2 > $name2.sai
-		#echo $name2
-		#echo $read2
+
+		name=$(ls $f | cut -f1 -d_)
+		echo "processing " $name
+	
+		REFERENCE=../../velvet_contigs/$name\_[[:digit:]]*\_Contigs.fasta
+		echo "Reference is " $REFERENCE
+	
+	#	bwa index $REFERENCE
+	
+		if [[ $f == *_1.fastq ]]
+		then
+			read1=$f
+			name1=$(ls $f | cut -f1 -d.)
+			bwa aln $REFERENCE $read1 > $name1.sai
+			#echo $name1
+			#echo $read1
+		elif [[ $f == *_2.fastq ]]
+		then
+			read2=$f
+			name2=$(ls $f | cut -f1 -d.)
+			#echo "paired-end read " $name2
+			bwa aln $REFERENCE $read2 > $name2.sai
+			#echo $name2
+			#echo $read2
+		fi
 	fi
 done
 
@@ -64,6 +68,7 @@ do
 					samtools view -bS $name.sam > $name.bam
 					samtools sort $name.bam $name.sorted
 					samtools index $name.sorted.bam
+					echo "finished read-mapping for " $name
 				fi
 			fi
 		fi
