@@ -24,7 +24,7 @@ with open('list.txt', 'r') as f:
 #       print name
 	print "Parsing " + in_file
         reads = SeqIO.parse(in_file, "fastq")
-        output = open(name + "_reads.fastq", "w")
+        output = open(name + "_reads_1.fastq", "w")
         for fastq_rec in reads:
 #		print fastq_rec.id
 		if fastq_rec.id in read_ids:
@@ -45,7 +45,7 @@ with open('list_2.txt', 'r') as f:
         name2 = in_file.split("_")[0]
 #       print name2
         reads = SeqIO.parse(in_file, "fastq")
-        output = open( name2 + "_reads2.fastq", "w")
+        output = open( name2 + "_reads_2.fastq", "w")
         for fastq_rec in reads:
 #               print fastq_rec.id
                 if fastq_rec.id in read2_ids:
