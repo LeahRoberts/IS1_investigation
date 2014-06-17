@@ -9,6 +9,7 @@ Designed a fastq_parser (python script) which parses out reads that match those 
 
 Step 2: Generate a list of read names that you want to parse
 ---------------------------------------------------------------
+**Example lists can be found in the Example_files folder**
 
 The lists is generated from the velvet.bam file which has filtered reads that map to the IS reference::
 
@@ -45,7 +46,7 @@ This will give the output::
 	strain_reads_1.fastq
 	strain_reads_2.fastq
 
-
+**Example output can be found in the Example_files folder**
 
 Step 4: Map these reads back to the contigs
 ---------------------------------------------
