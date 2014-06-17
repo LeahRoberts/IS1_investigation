@@ -44,13 +44,39 @@ Once the .sam file has been created with all the appropriate reads, using the co
 
 	cat $IS1_related_reads.sam | cut -f3 -d$'\t' > locations.txt
 
-Creates a file called locations.txt that has all of the NODE_* information regarding where the reads map to. 
+Creates a file called locations.txt that has all of the NODE_* information regarding where the reads map to. This looks like::
+
+	NODE_601_length_177_cov_56.146893
+	NODE_601_length_177_cov_56.146893
+	NODE_601_length_177_cov_56.146893 
 
 Next, using the command::
 
 	cat locations.txt | sort | uniq -c
 
 Sorts all of the NODE_* locations, and counts the number of occurrences.
+This looks like::
+
+	12 *
+	2 NODE_108_length_19307_cov_9.113430
+	2 NODE_112_length_20804_cov_8.447606
+	2 NODE_122_length_3609_cov_9.052369
+	70 NODE_128_length_6478_cov_8.512504
+	2 NODE_18_length_26204_cov_8.977714
+	2 NODE_1_length_30927_cov_9.063634
+	34 NODE_225_length_1306_cov_8.650077
+	6 NODE_239_length_8961_cov_9.351747
+	2 NODE_241_length_7970_cov_9.011417
+
+Where the number of the left is the number of occurrences of reads mapping to the contig on the right.
+
 This can be parsed into a separate file::
 
 	cat locations.txt | sort | uniq -c > location_occur.txt
+
+Problem with this approach:
+----------------------------
+
+When it came to the analysis, I realised a problem with this approach - whilst I knew which contigs were involved, I had no way of knowing where on the contig the reads had mapped to. I could look at the bam file again to find these locations, but that would be very labour intensive and take too long. 
+
+Instead, I decided to go back to the fastq parser approach. By parsing only the reads I want and mapping those back to the contigs, I can open the bam file in artemis to visualise where the reads are mapping. 
