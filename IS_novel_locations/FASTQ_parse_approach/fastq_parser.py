@@ -12,6 +12,7 @@ import sys
 
 with open('list.txt', 'r') as f:
         read_ids = [line.strip() for line in f]
+        print len(read_ids) + " read ids imported"
 #       print len(read_ids)
 #	print read_ids
 
@@ -19,6 +20,7 @@ with open('list.txt', 'r') as f:
 # If the read is found in the read_ids list, it is written out to a "new_reads.fastq" file
 
 	in_file = sys.argv[1]
+	print "Parsing " + in_file
         reads = SeqIO.parse(in_file, "fastq")
         output = open("new_reads.fastq", "w")
         for fastq_rec in reads:
@@ -28,4 +30,4 @@ with open('list.txt', 'r') as f:
 #			exit()
 			SeqIO.write(fastq_rec, output, "fastq")
 		
-	
+print "Finished parsing"	
