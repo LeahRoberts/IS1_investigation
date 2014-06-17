@@ -11,8 +11,8 @@
 # uncomment the bwa index step if the reference has not been indexed before
 # The reads need to be in the format strainname_1.fastq for the script to work properly
 
-REFERENCE=../IS1.fasta
-IS='IS1,2384715..2385482(-1),EC958'
+REFERENCE=../IS1_selC.fasta
+IS='IS1_4140078..4140846'
 
 bwa index $REFERENCE
 
@@ -92,22 +92,19 @@ do
 		samtools faidx $REFERENCE
 		echo "creating bam file from sam file"
 		samtools view -bt $REFERENCE.fai $name.sorted.mapped.sam > $name.velvet.bam
-		echo "make text file with the read names"
-		samtools view $name.velvet.bam | cut -f1 -d$'\t' > $name.readnames.txt
 		echo "finished creating bam file for velvet"
 	fi
 done
 	
 # Can then use this $name.header.bam file in the velvet assemblies
 
-# Cleanup the files you don't need:
+# Cleanup the files you don't need (i.e. everything but the velvet.bam file):
 
 for f in *
 do
-	if [[ $f == *.sai ]]
+	if [[ $f != *.velvet.bam ]]
 	then
 		rm $f
-
 	fi
 done
 
@@ -143,7 +140,19 @@ do
 		echo $name "has" $contig_num "contigs" > log.txt
 		echo $name "has" $nuc_results "matching contigs out of" $contig_num >> log.txt
 		cd ../
+		mv $name* $name/
+		cd $name
+		
+		for f in *
+		do
+			if [[ $f == *.velvet.bam ]]
+			then
+				samtools view $f | cut -f1 -d$'\t' > list.txt
+				cat list.txt > list_2.txt
+			fi
+		done
 	fi	
 done
+
 
  
