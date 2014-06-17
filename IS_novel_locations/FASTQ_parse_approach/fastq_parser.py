@@ -12,7 +12,7 @@ import sys
 
 with open('list.txt', 'r') as f:
         read_ids = [line.strip() for line in f]
-        print len(read_ids) + " read ids imported"
+        print "%d reads imported" % (len(read_ids))  
 #       print len(read_ids)
 #	print read_ids
 
@@ -38,12 +38,13 @@ print "Finished parsing " + in_file
 
 with open('list_2.txt', 'r') as f:
         read2_ids = [line.strip() for line in f]
-#       print len(read2_ids)
+	print "%d reads imported" % (len(read_ids))
 #       print read2_ids
 
         in_file = sys.argv[2]
         name2 = in_file.split("_")[0]
-#       print name2
+        print "Parsing " + in_file
+#	print name2
         reads = SeqIO.parse(in_file, "fastq")
         output = open( name2 + "_reads_2.fastq", "w")
         for fastq_rec in reads:
