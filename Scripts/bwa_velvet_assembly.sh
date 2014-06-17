@@ -99,13 +99,19 @@ done
 # Can then use this $name.header.bam file in the velvet assemblies
 
 # Cleanup the files you don't need (i.e. everything but the velvet.bam file):
-
+mkdir tmp
 for f in *
 do
-	if [[ $f != *.velvet.bam ]]
+	if [[ $f == *.fastq ]]
+	then
+		mv $f tmp/
+	
+	elif [[ $f != *.velvet.bam ]]
 	then
 		rm $f
 	fi
+	mv tmp/* ./
+	rm -r tmp/
 done
 
 # Run velvet assembly using the .bam file generated from just the reads mapping to the chromosome
@@ -149,8 +155,12 @@ do
 			then
 				samtools view $f | cut -f1 -d$'\t' > list.txt
 				cat list.txt > list_2.txt
+				sed -i 's/$/\/1/g' list.txt
+				sed -i 's/$/\/2/g' list_2.txt
+				python ../../fastq_parser.py $name\_1.fastq $name\_2.fastq 
 			fi
 		done
+		cd ../
 	fi	
 done
 
