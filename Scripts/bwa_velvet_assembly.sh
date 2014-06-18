@@ -83,6 +83,23 @@ do
 	fi
 done
 
+# Cleanup the files you don't need (i.e. everything but the velvet.bam file):
+mkdir tmp
+for f in *
+do
+        if [[ $f == *.fastq ]]
+        then
+                mv $f tmp/
+
+        elif [[ $f != *.sorted.mapped.sam ]]
+        then
+                rm $f
+        fi
+        mv tmp/* ./
+        rm -r tmp/
+done
+
+
 for f in *
 do
 	if [[ $f == *mapped.sam ]]
@@ -93,26 +110,11 @@ do
 		echo "creating bam file from sam file"
 		samtools view -bt $REFERENCE.fai $name.sorted.mapped.sam > $name.velvet.bam
 		echo "finished creating bam file for velvet"
+		rm $name.sorted.mapped.sam
 	fi
 done
 	
 # Can then use this $name.header.bam file in the velvet assemblies
-
-# Cleanup the files you don't need (i.e. everything but the velvet.bam file):
-mkdir tmp
-for f in *
-do
-	if [[ $f == *.fastq ]]
-	then
-		mv $f tmp/
-	
-	elif [[ $f != *.velvet.bam ]]
-	then
-		rm $f
-	fi
-	mv tmp/* ./
-	rm -r tmp/
-done
 
 # Run velvet assembly using the .bam file generated from just the reads mapping to the chromosome
 contigs=../contigs.txt
