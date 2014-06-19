@@ -12,7 +12,7 @@ do
 		name=$(ls $f | cut -f1 -d_)
 		echo "processing " $name
 	
-		REFERENCE=../../velvet_contigs/$name\_[[:digit:]]*\_Contigs.fasta
+		REFERENCE=../../ST131_99_ord/$name\_[[:digit:]]*\_Contigs.fas
 		echo "Reference is " $REFERENCE
 	
 		bwa index $REFERENCE
