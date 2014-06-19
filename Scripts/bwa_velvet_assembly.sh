@@ -164,7 +164,6 @@ do
 				mv $name\_reads_1.fastq $name\_1.fastq
 				mv $name\_reads_2.fastq $name\_2.fastq
 				bash ../../align_to_contigs.sh
-				rm *sai
 			fi
 		done
 		cd ../
