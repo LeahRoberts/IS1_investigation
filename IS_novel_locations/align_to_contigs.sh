@@ -15,7 +15,7 @@ do
 		REFERENCE=../../velvet_contigs/$name\_[[:digit:]]*\_Contigs.fasta
 		echo "Reference is " $REFERENCE
 	
-	#	bwa index $REFERENCE
+		bwa index $REFERENCE
 	
 		if [[ $f == *_1.fastq ]]
 		then
@@ -68,6 +68,7 @@ do
 					samtools view -bS $name.sam > $name.bam
 					samtools sort $name.bam $name.sorted
 					samtools index $name.sorted.bam
+					rm $name.bam $name.sam $name1.sai $name2.sai
 					echo "finished read-mapping for " $name
 				fi
 			fi
