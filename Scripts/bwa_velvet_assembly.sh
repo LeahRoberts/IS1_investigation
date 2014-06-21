@@ -11,8 +11,8 @@
 # uncomment the bwa index step if the reference has not been indexed before
 # The reads need to be in the format strainname_1.fastq for the script to work properly
 
-REFERENCE=../IS1_selC.fasta
-IS='IS1_4140078..4140846'
+REFERENCE=../IS1_yehA.fasta
+IS='IS1_2384715..2385482'
 
 bwa index $REFERENCE
 
