@@ -11,8 +11,8 @@
 # uncomment the bwa index step if the reference has not been indexed before
 # The reads need to be in the format strainname_1.fastq for the script to work properly
 
-REFERENCE=../S10EC_IS1_afa.fasta
-IS='S10EC_IS1_afa'
+REFERENCE=../ISEc10.fasta
+IS='ISEc10_EC958'
 
 bwa index $REFERENCE
 
@@ -119,7 +119,7 @@ done
 # Run velvet assembly using the .bam file generated from just the reads mapping to the chromosome
 contigs=../contigs.txt
 list=../list.txt
-IS_reference=../../afa_IS1_S10_S12.fasta
+IS_reference=../../EC958_ISEc10.fasta
 
 for f in *
 do
