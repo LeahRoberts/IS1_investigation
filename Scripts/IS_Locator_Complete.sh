@@ -114,9 +114,6 @@ do
                         			samtools index $name.sorted.bam
 						echo "Filtering reads that map to the reference"
 						samtools view $name.sorted.bam $IS > $name.sorted.mapped.sam
-						
-# Removes the original fastq files. These should be commented out if using the script for the first time or 
-# if the user prefers to keep all the data:                        			
 						rm $name.sam
 
                     			fi
