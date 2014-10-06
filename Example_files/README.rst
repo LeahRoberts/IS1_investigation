@@ -1,7 +1,7 @@
-Example Files for use in IS1_Nucmer Analysis
+Example Files used in IS1_Nucmer Analysis
 =============================================
 
-Example files used when mapping reads to a reference IS and de novo assembling those reads.
+Example files used to map ST131 illumina paired end reads to an IS1 reference, assemble those reads and Nucmer compare them to IS1 plus flanking region from EC958.
 
 List of Files:
 ---------------
