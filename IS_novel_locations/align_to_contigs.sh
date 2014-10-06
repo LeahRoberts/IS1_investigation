@@ -1,8 +1,13 @@
 #!/bin/bash
 
-# Bash script to map the reads from the 99 ST131 strains back to their velvet contigs
+# Author: Leah Roberts
+# Affiliation: Scott Beatson Lab Group (University of Queensland St Lucia)
+# Date: June 2014
 
-# Make all of the .sai files
+#################### Align to Contigs Script ##########################
+
+### This script is to be used in conjunction with the IS_Locator.sh script.
+# It is designed to map the reads from 99 ST131 strains back to their velvet contigs using BWA
 
 for f in *
 do
@@ -17,61 +22,94 @@ do
 	
 		bwa index $REFERENCE
 	
-		if [[ $f == *_1.fastq ]]
+		if [[ $f == *_1.fastq.gz ]]
 		then
-			read1=$f
-			name1=$(ls $f | cut -f1 -d.)
+			gunzip $f
+			read1=$(echo $f | cut -f1-2 -d.)
+			name1=$(echo $f | cut -f1 -d.)
 			bwa aln $REFERENCE $read1 > $name1.sai
-			#echo $name1
-			#echo $read1
-		elif [[ $f == *_2.fastq ]]
+		
+		elif [[ $f == *_2.fastq.gz ]]
 		then
-			read2=$f
-			name2=$(ls $f | cut -f1 -d.)
-			#echo "paired-end read " $name2
+			gunzip $f
+			read2=$(echo $f | cut -f1-2 -d.)
+			name2=$(echo $f | cut -f1 -d.)	
 			bwa aln $REFERENCE $read2 > $name2.sai
-			#echo $name2
-			#echo $read2
-		fi
+		
+		elif [[ $f == *_1.fastq ]]
+		then
+			name1=$(echo $f | cut -f1 -d.)
+                        bwa aln $REFERENCE $f > $name1.sai
+		
+		elif [[ $f == *_2.fastq ]]
+		then	
+			name2=$(echo $f | cut -f1 -d.)
+                        bwa aln $REFERENCE $f > $name2.sai
 	fi
 done
+
+# Write another loop that will take the .sai files from the previous section, and map them 
+# to the reference strain generating .sam and .bam files.
 
 for f in *
 do
 	if [[ $f == *fastq ]]
 	then
-#  Parse out just the name of the strain (again, in the format $strainname_1.fastq) 
-        name=$(ls $f | cut -f1 -d_)
-        echo $name       
 
+# Parse out just the name of the strain (again, in the format $name_1.fastq). 
+		name=$(echo $f | cut -f1 -d_)
+		
+# Want to only perform the alignment once - as there are two .sai files, this has the 
+# potential to interate through twice. This if statement prevents the script from 
+# iterating through more than once on the same strain:
 		if [[ ! -e $name.bam ]]
-        	then
-         	echo "performing alignment on " $name
+		then
+			echo "checking for pairs - " $name
 
-# Make sure that the names of paired files (.sai and .fastq) are the SAME and that the SAME strain files are being aligned to the reference (again using BWA):
+            		if [[ $(echo $f | cut -f1 -d. | cut -f2 -d_) == "1" ]]
+            		then
+            			name1=$f
+            			echo "first paired read = " $name1
+            			
+# Make sure that the names of paired files (.sai and .fastq) are the SAME and that the SAME strain files are being aligned 
+# to the reference (again using BWA):
+                		for g in *
+                		do
+                			if [[ $(echo $g | cut -f2 -d_) == "2.fastq" ]] && [[ $(echo $g | cut -f1 -d_) == $name ]]
+                    			then
+                    				echo $f "and" $g "are a pair - performing alignment"
+                        			bwa sampe $REFERENCE $name\_1.sai $name\_2.sai $f $g > $name.sam
+                        			samtools view -bS $name.sam > $name.bam
+                        			samtools sort $name.bam $name.sorted
+                        			samtools index $name.sorted.bam
+						rm $name.bam $name.sam
+						echo "finished read-mapping for " $name
+                    			fi
+                		done
 
-                	if [[ $(ls $f | cut -f1 -d.) == *_1* ]]
-                	then
-                        	name1=$(ls $f | cut -f1 -d.)
-#                       	echo $name1
+# A second loop exactly the same as the first, except it takes in "read2" files:                		
 
-                	elif [[ $(ls $f | cut -f1 -d.) == *_2* ]]
-                	then
-                        	name2=$(ls $f | cut -f1 -d.)
-#                       	echo $name2             
+			elif [[ $(echo $f | cut -f1 -d. | cut -f2 -d_) == "2" ]]
+         		then
+                    		name2=$f
+                    		echo "second paired read = " $name2
 
-			 	if [[ $(ls $name1 | cut -f1 -d_) == $(ls $name2 | cut -f1 -d_) ]]
-                        	then
-                                	echo "creating sam file"
-                                	bwa sampe $REFERENCE $name1.sai $name2.sai $name1.fastq $name2.fastq > $name.sam
-					echo "finished creating .sam file"
-					samtools view -bS $name.sam > $name.bam
-					samtools sort $name.bam $name.sorted
-					samtools index $name.sorted.bam
-					rm $name.bam $name.sam $name1.sai $name2.sai
-					echo "finished read-mapping for " $name
-				fi
-			fi
+                    		for g in *
+                    		do
+                    			if [[ $(echo $g | cut -f2 -d_) == "1.fastq" ]] && [[ $(echo $g | cut -f1 -d_) == $name ]]
+                        		then
+                        			echo $f "and" $g "are a pair"
+                            			bwa sampe $REFERENCE $name\_1.sai $name\_2.sai $g $f > $name.sam
+                            			samtools view -bS $name.sam > $name.bam
+                            			samtools sort $name.bam $name.sorted
+                            			samtools index $name.sorted.bam
+ 						rm $name.bam $name.sam
+						echo "finished read-mapping for " $name
+                        		fi
+                		done
+            		fi
 		fi
 	fi
+	
+
 done
