@@ -39,6 +39,7 @@ Several files need to be arranged accordingly for the script to work.
 5. The comparison file (containing IS1 and flanking regions-100 bp- from EC958) should be in the same directory as the contigs.txt list etc.
 6. The "fastq_parser.py" script should also be in the directory above the raw reads
 7. The "align_to_contigs.sh" script should also be in the directory above the raw reads
+8. A directory containing assembled draft genome contigs for the strains being tested should be available in the directory above the raw reads. The directory should be named 'ST131_99_ord' (this is hardcoded) and the contig files should be named as follows: $name\_[[:digit:]]*\_Contigs.fas, for example: B36EC_57_Contigs.fas. Importantly, the name here should match the name identifier on the fastq read files. 
 
 Run the Script:
 ----------------
