@@ -188,7 +188,7 @@ done
 
 contigs=../contigs.txt			# This is a list of the khmer size to be used in the velvet assembly
 list=../list.txt			# This is a list of insert sizes and insert size standard deviation to be use in the velvet assembly
-IS_reference=../../EC958_ISEc10.fasta	# This is the IS reference file that contains the IS sequence plus 100 bp of flanking sequence either side. This reference will be compared against the newly generated contigs (from the IS reads assembly) to determine if the IS1 flanking regions are the same, or different. 
+IS_reference=$3	# This is the IS reference file that contains the IS sequence plus 100 bp of flanking sequence either side. This reference will be compared against the newly generated contigs (from the IS reads assembly) to determine if the IS1 flanking regions are the same, or different. 
 
 # The section below assembled the IS read files using velvet:
 
