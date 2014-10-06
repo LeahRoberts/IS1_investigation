@@ -1,9 +1,14 @@
 #!/usr/bin/env python
 
-# Fastq parser
+# Author: Leah Roberts
+# Affiliation: Scott Beatson Lab Group (University of Queensland St Lucia)
+# Date: June 2014
+
+################ Fastq parser ######################
+
 # Parses out reads that match those in a txt file
 
-# USAGE: 
+#### USAGE: 
 
 # Simple overview:
 
