@@ -1,7 +1,11 @@
-# Sliding Window Script
+#!/bin/env python
 
-# Author: Leah Roberts (Scott Beatson Lab)
-# Date: 05-09-14
+# Author: Leah Roberts
+# Affiliation: Scott Beatson Lab Group (University of Queensland St Lucia)
+# Date: September 2014
+
+################ Sliding Window Script ###########################
+########### Used to created a graph for EasyFig ##################
 
 # This script is designed to iteratively count the number of genes 
 # within a predefined window size. The output is a csv file, which 
