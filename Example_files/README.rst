@@ -1,5 +1,5 @@
-Example Files for use in IS1 investigation
-==========================================
+Example Files for use in IS1_Nucmer Analysis
+=============================================
 
 Example files used when mapping reads to a reference IS and de novo assembling those reads.
 
