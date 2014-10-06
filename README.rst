@@ -1,13 +1,15 @@
-IS1 Investigation of the ST131 99 lineage
-==========================================
+IS Investigation in the ST131 Lineage
+=======================================
 
-Overview:
----------
+Several scripts were generated to fulfill the purpose of finding IS similar to EC958, and to also find novel IS1 locations in the ST131 lineage.
+
+Overview of the IS_Locator script:
+-----------------------------------
 
 This script has 2 outcomes:
 
-1. Mapping of reads to IS in order to resolve flanking regions
-2. Parsing reads that match IS and mapping them back to their original contigs
+1. Mapping of reads to an IS reference in order to resolve flanking regions
+2. Parsing reads that map to an IS reference and mapping them back to the draft genome contigs for that particular strain
 
 
 For the first part, this script is designed to map Illumina paired-end reads (using bwa) to an IS reference sequence (without flanking regions), parse out reads that map to the reference and de novo assemble them. The theory is that reads that overlap the edges of the IS will de novo assemble into the flanking regions which will give the contextual location of the IS.  
@@ -16,14 +18,23 @@ Nucmer is then used to compare the contigs to firstly the EC958 IS (with 100 bp 
 
 For the second part, the reads that are found to map to the IS in part 1 are parsed into separate fastq files and mapped back to their original assembled contigs. This should show where the reads are mapping to and give an indication of where IS are in the original assembly.
 
-Setup:
--------
+Installation Requirements
+---------------------------
+
+1. Burrows-Wheeler Aligner (bwa) (http://bio-bwa.sourceforge.net/)
+2. SAMtools (http://samtools.sourceforge.net/)
+3. Python (2.7 plus BioPython modules)
+4. Velvet (https://www.ebi.ac.uk/~zerbino/velvet/)
+5. Nucmer (http://mummer.sourceforge.net/)
+
+Setup - Brief Overview:
+------------------------
 
 Several files need to be arranged accordingly for the script to work.
 
 1. The fastq read files (not interleaved) need to be in the one directory and need to be named: strain_1.fastq
-2. A list of the kmers to be used for each strain needs to be given in the directory above the reads
-3. A list of the insert size (as well as standard deviation) also needs to be given in the directory above the reads
+2. A list of the kmers to be used for each strain needs to be given in the directory above the reads, named **contigs.txt**
+3. A list of the insert sizes (as well as standard deviation) also needs to be given in the directory above the reads, named **list.txt**
 4. The IS reference should be .fasta and in the directory above
 5. The comparison file (containing IS1 and flanking regions-100 bp- from EC958) should be in the same directory as the kmer list etc.
 6. The "fastq_parser.py" script should also be in the directory above the raw reads
@@ -34,9 +45,8 @@ Run the Script:
 
 Once you've completed the above requirements and you're in the directory containing all the raw illumina reads, to run the script simply type::
 
-  bash ~/bin/bwa_velvet_assembly.sh
+  bash ~/bin/bwa_velvet_assembly.sh ../$IS_REFERENCE_FOR_MAPPING.fa '$IS_reference_header' ../../IS_REFERENCE_FOR_COMPARISON.fa
   
-**NOTE** - All of the files mentioned in the Setup section need to be named according to their description in the bash script
 
 Output:
 --------
@@ -58,4 +68,36 @@ Manually investigating each of these will tell you whether the flanking regions 
 
 For contigs that don't match EC958, they were manually parsed into a new file (rem_contigs.fa) and compared to the EC958 chromosome using nucmer (rem_contigs.delta), on the assumption that these contigs were potentially novel flanking regions, and that the ST131 strains were highly similar to EC958 (potentially valid for clade C, probably not as much for clade A and B). 
 
-As for the .bam output, visualising this in Artemis against the ST131 contigs will show peaks where the reads are mapping. In the case of IS1, this won't show all IS1 due to the bias in using different IS1 references. 
+As for the .bam output, visualising this in Artemis against the ST131 contigs will show peaks where the reads are mapping. 
+
+Example File formats:
+---------------------
+
+1. contigs.txt file::
+
+  B36EC_81_Contigs.fasta
+  HVM1147_73_Contigs.fasta
+
+The middle number represents the khmer length.
+
+2. list.txt file::
+
+  B36EC,248.06,93.39
+  HVM1147,239.34,89.03
+  
+The first number is the insert size, and the second number is the SD of the insert size.
+
+3. The IS reference for the first mapping step::
+
+  >IS1_EC958
+  GGTGATGCTGCCAACTTACTGATTTAGTGTATGATGGTGTTTTTGAGGTGCTCCAGTGGC
+  TTCTGTTTCTATCAGCTGTCCCTCCTGTTCAGCTACTGACGGGGTGGTGCGTAACGGCAA
+  
+The header should also be included in the command as 'IS1_EC958' (including the '').
+
+4. IS1 from EC958 reference file::
+
+  >IS1,IS1..3288120..3288887(1),100bp flanked,[EC958 IS]
+  CGGAAGAATCAGAGGCTGTGGTTTCAGACTGTCTGCCAGTACATTCCTCTCTCCGTTAAAAACCATAACGGGTTCATTATCTTCGTCTGTCAGCAGATTGGGTGATGCTGCCAACTTACTGATTT   AGTGTATGATGGTGTTTTTGAGGTGCTCCAGTGGCTTCTGTTTCTATCAGCTGTCCCTCCTGTTCAGCTACTGACGGGGTGGTGCGTAACGGCAAAAGCACCGCCGGACATCAGCGCTATCTCTG   CTCT
+  >IS1,IS1..3290147..3290914(-1),100bp flanked,[EC958 IS]
+  GAAAGATGGTGATAATGTGCTGCATTATACTGCGATTGTTAAGAAGTCGTCAGCCAATAATGCCCAAGTCACTGAGGGTGCTTTTTCTGCAGTCGCAACCGGTGATGCTGCCAACTTACTGATTT   AGTGTATGATGGTGTTTTTGAGGTGCTCCAGTGGCTTCTGTTTCTATCAGCTGTCCCTCCTGTTCAGCTACTGACGGGGTGGTGCGTAACGGCAAAAGCACCGCCGGACATCAGCGCTATCTCTG   CTCT
