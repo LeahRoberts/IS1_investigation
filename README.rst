@@ -36,7 +36,7 @@ Several files need to be arranged accordingly for the script to work.
 2. A list of the kmers to be used for each strain needs to be given in the directory above the reads, named **contigs.txt**
 3. A list of the insert sizes (as well as standard deviation) also needs to be given in the directory above the reads, named **list.txt**
 4. The IS reference should be .fasta and in the directory above
-5. The comparison file (containing IS1 and flanking regions-100 bp- from EC958) should be in the same directory as the kmer list etc.
+5. The comparison file (containing IS1 and flanking regions-100 bp- from EC958) should be in the same directory as the contigs.txt list etc.
 6. The "fastq_parser.py" script should also be in the directory above the raw reads
 7. The "align_to_contigs.sh" script should also be in the directory above the raw reads
 
@@ -62,7 +62,7 @@ Output:
 7. Two new strain_1.fastq files - these are not the original fastq files - these only contain the reads that mapped to the reference IS
 8. Bam, sam etc files - the usual output from bwa - which relate to the IS reads that have been mapped back to the strain's original contigs.
 
-*You will likely also need to know the length of your query EC958 IS to determine whether there are matches at the flanking regions (python script included). 
+*You will likely also need to know the length of your query EC958 IS to determine whether there are matches at the flanking regions (python script included).* 
 
 Manually investigating each of these will tell you whether the flanking regions match EC958 or not.
 
@@ -73,21 +73,21 @@ As for the .bam output, visualising this in Artemis against the ST131 contigs wi
 Example File formats:
 ---------------------
 
-1. contigs.txt file::
+contigs.txt file::
 
   B36EC_81_Contigs.fasta
   HVM1147_73_Contigs.fasta
 
 The middle number represents the khmer length.
 
-2. list.txt file::
+list.txt file::
 
   B36EC,248.06,93.39
   HVM1147,239.34,89.03
   
 The first number is the insert size, and the second number is the SD of the insert size.
 
-3. The IS reference for the first mapping step::
+The IS reference for the first mapping step::
 
   >IS1_EC958
   GGTGATGCTGCCAACTTACTGATTTAGTGTATGATGGTGTTTTTGAGGTGCTCCAGTGGC
@@ -95,7 +95,7 @@ The first number is the insert size, and the second number is the SD of the inse
   
 The header should also be included in the command as 'IS1_EC958' (including the '').
 
-4. IS1 from EC958 reference file::
+IS1 from EC958 reference file::
 
   >IS1,IS1..3288120..3288887(1),100bp flanked,[EC958 IS]
   CGGAAGAATCAGAGGCTGTGGTTTCAGACTGTCTGCCAGTACATTCCTCTCTCCGTTAAAAACCATAACGGGTTCATTATCTTCGTCTGTCAGCAGATTGGGTGATGCTGCCAACTTACTGATTT   AGTGTATGATGGTGTTTTTGAGGTGCTCCAGTGGCTTCTGTTTCTATCAGCTGTCCCTCCTGTTCAGCTACTGACGGGGTGGTGCGTAACGGCAAAAGCACCGCCGGACATCAGCGCTATCTCTG   CTCT
