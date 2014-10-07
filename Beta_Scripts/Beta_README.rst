@@ -2,7 +2,9 @@ Finding location of IS reads among contigs of ST131 strains
 =============================================================
 
 How to map ST131 reads back to their contigs, parse the reads that are known to be related to IS1, and count the number of occurrences:
------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+*This was a preliminary method to the now finalised "IS_Locator.sh" method. As such, this README should be used for reference only.*
 
 **NOTE** - There is a problem with this approach in the analysis - It is very difficult see where the reads are actually mapping. It would be easier to look at a bam pileup in Artemis to see where IS reads are and where their paired read is mapping. Please see "FASTQ_parse_approach" folder for alternate method.
 
