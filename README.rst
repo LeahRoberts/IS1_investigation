@@ -32,7 +32,7 @@ Setup - Brief Overview:
 
 Several files need to be arranged accordingly for the script to work.
 
-1. The fastq read files (not interleaved) need to be in the one directory and need to be named: strain_1.fastq
+1. The fastq read files (not interleaved) need to be in the one directory and need to be named: strain_1.fastq. The fastq files can be zipped or unzipped (i.e. fastq or fastq.gz)
 2. A list of the kmers to be used for each strain needs to be given in the directory above the reads, named **contigs.txt**
 3. A list of the insert sizes (as well as standard deviation) also needs to be given in the directory above the reads, named **list.txt**
 4. The IS reference should be .fasta and in the directory above
