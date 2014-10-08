@@ -16,11 +16,18 @@ do
 
 		name=$(ls $f | cut -f1 -d_)
 		echo "processing " $name
+		
+# This regular expression makes sure that the correct draft contigs are selected for each strain. 
+# The .fa contig files need to be in a folder called "ST131_99_ord" in the same folder as this script.
+# The contigs file needs to be named to fit the regular expression <$name\_[[:digit:]]*\_Contigs.fas>, 
+# for example --> B36EC_39_Contigs.fas
 	
 		REFERENCE=../../ST131_99_ord/$name\_[[:digit:]]*\_Contigs.fas
 		echo "Reference is " $REFERENCE
 	
 		bwa index $REFERENCE
+		
+# The script can take in both fastq and fastq.gz files:
 	
 		if [[ $f == *_1.fastq.gz ]]
 		then
@@ -79,7 +86,7 @@ do
                     			then
                     				echo $f "and" $g "are a pair - performing alignment"
                         			bwa sampe $REFERENCE $name\_1.sai $name\_2.sai $f $g > $name.sam
-                        			samtools view -bS $name.sam > $name.bam
+                        			samtools view -bS -F 4 $name.sam > $name.bam
                         			samtools sort $name.bam $name.sorted
                         			samtools index $name.sorted.bam
 						rm $name.bam $name.sam
@@ -100,7 +107,7 @@ do
                         		then
                         			echo $f "and" $g "are a pair"
                             			bwa sampe $REFERENCE $name\_1.sai $name\_2.sai $g $f > $name.sam
-                            			samtools view -bS $name.sam > $name.bam
+                            			samtools view -bS -F 4 $name.sam > $name.bam
                             			samtools sort $name.bam $name.sorted
                             			samtools index $name.sorted.bam
  						rm $name.bam $name.sam
