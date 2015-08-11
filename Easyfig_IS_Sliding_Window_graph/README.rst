@@ -3,6 +3,11 @@ EasyFig IS1 Sliding Window Graph
 
 A python script generated to count the number of gene features (eg. IS1) within a predefined window (eg. 10,000 bp), and to then iteratively move across the genome and generate a numerical list of the desired gene feature in each region throughout. 
 
+To recreate the analysis in the paper, use the "Generate list of Distances" script alongside the R script provided in this repository:
+
+https://github.com/nbenzakour/DistanceDistributionAnalysis/
+
+
 Editing the input embl file
 ------------------------------
 
